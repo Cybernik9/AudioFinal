@@ -1,0 +1,19 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '8.0'
+# Uncomment this line if you're using Swift
+# use_frameworks!
+
+target 'TestAudioProject' do
+
+pod "VK-ios-sdk"
+pod "AFNetworking"
+
+end
+
+target 'TestAudioProjectTests' do
+
+pod "VK-ios-sdk"
+pod "AFNetworking"
+
+end
+
