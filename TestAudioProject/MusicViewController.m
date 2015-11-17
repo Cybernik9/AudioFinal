@@ -16,7 +16,7 @@
 @interface MusicViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSArray* musicArray;
-@property (strong, nonatomic) NSArray* musicPlayArray;
+//@property (strong, nonatomic) NSArray* musicPlayArray;
 //@property (strong, nonatomic) VKAudio* audioPlay;
 
 @end
@@ -92,9 +92,11 @@ static VKAudio* audioPlayNow;
     activeRow = indexPath.row;
     [self.tableView reloadData];
     
-    self.musicPlayArray = [[NSArray alloc] initWithArray:self.musicArray];
+    //self.musicPlayArray = [self.musicArray copy];
+    //VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:indexPath.row];
     
-    VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:indexPath.row];
+    VKAudio *tempAudio = [self.musicArray objectAtIndex:indexPath.row];
+    
     //audioPlayNow = tempAudio;
     
     self.musicSlider.maximumValue = [tempAudio.duration floatValue];
@@ -184,7 +186,9 @@ static VKAudio* audioPlayNow;
 
 - (void)showCurrentTimeChanging {
     
-    VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
+    //VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
+    
+    VKAudio *tempAudio = [self.musicArray objectAtIndex:activeRow];
     
     //VKAudio *tempAudio = audioPlayNow;
     
@@ -196,7 +200,8 @@ static VKAudio* audioPlayNow;
         NSLog(@"nextTrack");
         activeRow++;
         
-        tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
+        //tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
+        tempAudio = [self.musicArray objectAtIndex:activeRow];
         //audioPlayNow = tempAudio;
         artistMusic = tempAudio.artist;
         titleMusic = tempAudio.title;
