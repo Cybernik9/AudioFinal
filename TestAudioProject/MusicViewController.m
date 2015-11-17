@@ -16,6 +16,7 @@
 @interface MusicViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSArray* musicArray;
+@property (strong, nonatomic) NSArray* musicPlayArray;
 //@property (strong, nonatomic) VKAudio* audioPlay;
 
 @end
@@ -28,13 +29,16 @@ static NSString* artistMusic;
 static NSString* titleMusic;
 static NSString* timeMusic;
 
-static NSTimer *timer;
+static NSTimer* timer;
+
+static VKAudio* audioPlayNow;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     self.musicArray = [[NSMutableArray alloc] init];
+    //self.musicPlayArray = [[NSMutableArray alloc] init];
     
     self.ownerId = [FriendsTableViewController getOwnerId];
     
@@ -88,8 +92,10 @@ static NSTimer *timer;
     activeRow = indexPath.row;
     [self.tableView reloadData];
     
-    VKAudio *tempAudio = [self.musicArray objectAtIndex:indexPath.row];
-    //self.audioPlay = tempAudio;
+    self.musicPlayArray = [[NSArray alloc] initWithArray:self.musicArray];
+    
+    VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:indexPath.row];
+    //audioPlayNow = tempAudio;
     
     self.musicSlider.maximumValue = [tempAudio.duration floatValue];
     self.musicSlider.value = 0.f;
@@ -178,9 +184,9 @@ static NSTimer *timer;
 
 - (void)showCurrentTimeChanging {
     
-    VKAudio *tempAudio = [self.musicArray objectAtIndex:activeRow];
+    VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
     
-    //VKAudio *tempAudio = self.audioPlay;
+    //VKAudio *tempAudio = audioPlayNow;
     
     CGFloat duration = [tempAudio.duration doubleValue];
     CGFloat currentTime = [[Player sharedPlayer] currentTime];
@@ -190,8 +196,8 @@ static NSTimer *timer;
         NSLog(@"nextTrack");
         activeRow++;
         
-        tempAudio = [self.musicArray objectAtIndex:activeRow];
-        //self.audioPlay = tempAudio;
+        tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
+        //audioPlayNow = tempAudio;
         artistMusic = tempAudio.artist;
         titleMusic = tempAudio.title;
         [self printArtist:artistMusic printTitle:titleMusic];
