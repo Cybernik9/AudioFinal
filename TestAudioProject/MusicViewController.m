@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSArray* musicArray;
 //@property (strong, nonatomic) NSArray* musicPlayArray;
 //@property (strong, nonatomic) VKAudio* audioPlay;
+@property (strong, nonatomic) NSArray* searchArray;
 
 @end
 
@@ -39,6 +40,7 @@ static VKAudio* audioPlayNow;
     
     self.musicArray = [[NSMutableArray alloc] init];
     //self.musicPlayArray = [[NSMutableArray alloc] init];
+    self.searchArray = [[NSArray alloc] init];
     
     self.ownerId = [FriendsTableViewController getOwnerId];
     
@@ -122,6 +124,8 @@ static VKAudio* audioPlayNow;
         VKAudios *audios = [[VKAudios alloc] initWithDictionary:response.json objectClass:VKAudio.class];
         self.musicArray = audios.items;
         [self.tableView reloadData];
+        
+        self.searchArray = audios.items;
         
     } errorBlock:^(NSError * error) {
         
@@ -296,6 +300,56 @@ static VKAudio* audioPlayNow;
 - (IBAction)actionSliderEndValue:(id)sender {
     
     NSLog(@"actionSliderEndValue");
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+    
+}
+
+- (NSMutableArray*) generateSectionsFromCitiesArray:(NSArray*) array withFilter:(NSString*) filterString {
+    
+    NSMutableArray* searchArray = [[NSMutableArray alloc] init];
+    
+    filterString = [filterString lowercaseString];
+    
+    for (int i=0; i < [array count]; i++) {
+        
+        VKAudio *tempAudio = [array objectAtIndex:i];
+        
+        NSString* string = [NSString stringWithFormat:@"%@%@", tempAudio.artist, tempAudio.title];
+        [string lowercaseString];
+        
+        if ([filterString length] > 0 && [string rangeOfString:filterString].location == NSNotFound) {
+            continue;
+        }
+        
+        [searchArray addObject:array[i]];
+    }
+    
+    return searchArray;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
+    self.musicArray = [self generateSectionsFromCitiesArray:self.searchArray withFilter:searchText];
+    
+//    if ([searchText isEqualToString:@""]) {
+//        [self getMusicFromServer];
+//    }
+    
+    [self.tableView reloadData];
+    
 }
 
 
