@@ -25,5 +25,7 @@
 - (void) playCurrentAudioTrack;
 - (float) currentTime;
 - (void) seekToTime:(CMTime)sliderValueTime;
+- (void) switchOnVolume;
+- (void) switchOffVolume;
 
 @end

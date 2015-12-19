@@ -75,6 +75,13 @@ static AVPlayer *player;
     [player seekToTime: sliderValueTime];
 }
 
+- (void) switchOnVolume {
+    player.volume = 1.f;
+}
+
+- (void) switchOffVolume {
+    player.volume = 0.f;
+}
 
 #pragma mark - Action methods
 

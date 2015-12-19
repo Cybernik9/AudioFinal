@@ -10,7 +10,7 @@
 
 @interface FriendsTableViewController : UITableViewController
 
-+ (NSString*) getOwnerId;
+//+ (NSString*) getOwnerId;
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 

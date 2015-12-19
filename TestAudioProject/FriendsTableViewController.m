@@ -18,11 +18,12 @@
 @property (assign, nonatomic) NSInteger countFriends;
 @property (weak, nonatomic) NSString* searchString;
 
+@property (strong, nonatomic) NSString* ownerId;
+
 @end
 
 @implementation FriendsTableViewController
 
-static NSString* ovnerId;
 static bool isRenewed;
 static const NSInteger countUpdateFriends = 25;
 
@@ -36,8 +37,9 @@ static const NSInteger countUpdateFriends = 25;
         NSArray *scope = @[@"friends,audio"];
         [VKSdk authorize:scope];
     }
-    
-    [self getFriendsFromServer:0];
+    else {
+        [self getFriendsFromServer:0];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,7 +87,7 @@ static const NSInteger countUpdateFriends = 25;
  @param newToken new token for API requests
  */
 - (void)vkSdkReceivedNewToken:(VKAccessToken *)newToken {
-    
+    [self getFriendsFromServer:0];
 }
 
 #pragma mark - UITableViewDataSource
@@ -142,13 +144,12 @@ static const NSInteger countUpdateFriends = 25;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.row == 0) {
-        ovnerId = nil;
+        self.ownerId = nil;
     } else {
-        ovnerId = [[self.friendsArray objectAtIndex:indexPath.row - 1] objectForKey:@"id"];
+        self.ownerId = [[self.friendsArray objectAtIndex:indexPath.row - 1] objectForKey:@"id"];
     }
-    
-    UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"musicViewController"];
-    [self.navigationController pushViewController:controller animated:YES];
+
+    [self performSegueWithIdentifier:@"musicIdentifier" sender:self];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scroll {
@@ -165,6 +166,17 @@ static const NSInteger countUpdateFriends = 25;
             [self getFriendsFromServer:[self.friendsArray count]];
         }
         isRenewed = YES;
+    }
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"musicIdentifier"]) {
+        
+        MusicViewController *mvc = segue.destinationViewController;
+        mvc.ownerId = self.ownerId;
     }
 }
 
@@ -241,51 +253,18 @@ static const NSInteger countUpdateFriends = 25;
         }
     }];
 }
-//
-//- (UIImage*)getOwnerImage {
-//    
-//    NSDictionary* params =
-//    [NSDictionary dictionaryWithObjectsAndKeys:
-//     @"photo_50",             @"fields", nil];
-//    
-//    VKRequest * audioReq = [[VKApi users] get:params];
-//    
-//    [audioReq executeWithResultBlock:^(VKResponse * response) {
-//        NSLog(@"Json result: %@", response.json);
-//        
-//        [self.friendsArray addObjectsFromArray:[response.json objectForKey:@"items"]];
-//        self.countFriends = [[response.json objectForKey:@"count"] integerValue];
-//        isRenewed = NO;
-//        
-//        [self.tableView reloadData];
-//        
-//    } errorBlock:^(NSError * error) {
-//        if (error.code != VK_API_ERROR) {
-//            [error.vkError.request repeat];
-//        }
-//        else {
-//            NSLog(@"VK error: %@", error);
-//        }
-//    }];
-//}
-
-+ (NSString*) getOwnerId {
-    return ovnerId;
-}
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     
     [searchBar setShowsCancelButton:YES animated:YES];
-    
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
-    
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

@@ -34,15 +34,17 @@ static NSTimer* timer;
 
 static VKAudio* audioPlayNow;
 
+static NSMutableArray* musicPlayArray;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     self.musicArray = [[NSMutableArray alloc] init];
-    //self.musicPlayArray = [[NSMutableArray alloc] init];
+    //musicPlayArray = [[NSMutableArray alloc] init];
     self.searchArray = [[NSArray alloc] init];
     
-    self.ownerId = [FriendsTableViewController getOwnerId];
+//    self.ownerId = [FriendsTableViewController getOwnerId];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -94,10 +96,13 @@ static VKAudio* audioPlayNow;
     activeRow = indexPath.row;
     [self.tableView reloadData];
     
-    //self.musicPlayArray = [self.musicArray copy];
-    //VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:indexPath.row];
+    [musicPlayArray removeAllObjects];
+    musicPlayArray = [[NSMutableArray alloc] initWithArray:self.musicArray];
     
-    VKAudio *tempAudio = [self.musicArray objectAtIndex:indexPath.row];
+    //musicPlayArray = [self.musicArray copy];
+    VKAudio *tempAudio = [musicPlayArray objectAtIndex:indexPath.row];
+    
+    //VKAudio *tempAudio = [self.musicArray objectAtIndex:indexPath.row];
     
     //audioPlayNow = tempAudio;
     
@@ -149,7 +154,25 @@ static VKAudio* audioPlayNow;
 
 - (void) playMusic {
     
-    VKAudio *tempAudio = [self.musicArray objectAtIndex:activeRow];
+//    if (![musicPlayArray count]) {
+//        musicPlayArray = [[NSMutableArray alloc] initWithArray:self.musicArray];
+//    }
+    
+    if (activeRow == -1) {
+        activeRow = 0;
+        
+        musicPlayArray = [[NSMutableArray alloc] initWithArray:self.musicArray];
+        VKAudio *tempAudio = [musicPlayArray objectAtIndex:0];
+        
+        self.musicSlider.maximumValue = [tempAudio.duration floatValue];
+        self.musicSlider.value = 0.f;
+        
+        [self printArtist:tempAudio.artist printTitle:tempAudio.title];
+        [self playMusic];
+        [self recreateTimer];
+    }
+    
+    VKAudio *tempAudio = [musicPlayArray objectAtIndex:activeRow];
     
     [[Player sharedPlayer] playWithStringPath:tempAudio.url];
 }
@@ -192,25 +215,17 @@ static VKAudio* audioPlayNow;
     
     //VKAudio *tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
     
-    VKAudio *tempAudio = [self.musicArray objectAtIndex:activeRow];
+    VKAudio *tempAudio = [musicPlayArray objectAtIndex:activeRow];
     
     //VKAudio *tempAudio = audioPlayNow;
     
     CGFloat duration = [tempAudio.duration doubleValue];
     CGFloat currentTime = [[Player sharedPlayer] currentTime];
     
-    if (duration <= (currentTime+0.1)) {
+    if (duration <= (currentTime)) {
         //[self nextTrack:nil];
         NSLog(@"nextTrack");
-        activeRow++;
-        
-        //tempAudio = [self.musicPlayArray objectAtIndex:activeRow];
-        tempAudio = [self.musicArray objectAtIndex:activeRow];
-        //audioPlayNow = tempAudio;
-        artistMusic = tempAudio.artist;
-        titleMusic = tempAudio.title;
-        [self printArtist:artistMusic printTitle:titleMusic];
-        [self playMusic];
+        [self actionNextSong:self];
     }
     
     self.musicSlider.maximumValue = duration;
@@ -302,6 +317,64 @@ static VKAudio* audioPlayNow;
     NSLog(@"actionSliderEndValue");
 }
 
+- (IBAction)actionNextSong:(id)sender {
+    
+    if (activeRow == [musicPlayArray count]) {
+        //Alert
+        NSLog(@"count == activeRow");
+    }
+    else {
+        activeRow++;
+        
+        VKAudio *tempAudio = [musicPlayArray objectAtIndex:activeRow];
+
+        artistMusic = tempAudio.artist;
+        titleMusic = tempAudio.title;
+        
+        [self printArtist:artistMusic printTitle:titleMusic];
+        [self playMusic];
+    }
+}
+
+- (IBAction)actionPreviousSong:(id)sender {
+    
+    if (activeRow == 0) {
+        //Alert
+        NSLog(@"count == 0");
+    }
+    else {
+        activeRow--;
+        
+        VKAudio *tempAudio = [musicPlayArray objectAtIndex:activeRow];
+        
+        artistMusic = tempAudio.artist;
+        titleMusic = tempAudio.title;
+        
+        [self printArtist:artistMusic printTitle:titleMusic];
+        [self playMusic];
+    }
+}
+
+- (IBAction)actionOnOffSound:(id)sender {
+    
+    static BOOL onOffVolume = YES;
+    
+    if (onOffVolume) {
+        onOffVolume = NO;
+        
+        [[Player sharedPlayer] switchOffVolume];
+        [self.onOffVolume setBackgroundImage:
+         [UIImage imageNamed:@"offSoundButton.png"] forState:UIControlStateNormal];
+    }
+    else {
+        onOffVolume = YES;
+        
+        [[Player sharedPlayer] switchOnVolume];
+        [self.onOffVolume setBackgroundImage:
+         [UIImage imageNamed:@"onSoundButton.png"] forState:UIControlStateNormal];
+    }
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -344,13 +417,8 @@ static VKAudio* audioPlayNow;
     
     self.musicArray = [self generateSectionsFromCitiesArray:self.searchArray withFilter:searchText];
     
-//    if ([searchText isEqualToString:@""]) {
-//        [self getMusicFromServer];
-//    }
-    
     [self.tableView reloadData];
     
 }
-
 
 @end

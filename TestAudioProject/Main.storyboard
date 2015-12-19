@@ -31,6 +31,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="e3v-jO-mze" kind="show" identifier="musicIdentifier" id="zF5-NN-KBz"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -72,7 +75,7 @@
                         <viewControllerLayoutGuide type="bottom" id="txL-z4-crJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tKU-pe-Lzw">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUx-yg-Yfq" userLabel="Play/Stop">
@@ -130,11 +133,33 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hd4-Qs-Pzh" userLabel="previousSong">
+                                <rect key="frame" x="550" y="36" width="30" height="30"/>
+                                <state key="normal" backgroundImage="previousSongButton"/>
+                                <connections>
+                                    <action selector="actionPreviousSong:" destination="e3v-jO-mze" eventType="touchUpInside" id="cQZ-fd-hWq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGe-g9-7Ob" userLabel="onOffSound">
+                                <rect key="frame" x="550" y="8" width="30" height="30"/>
+                                <state key="normal" backgroundImage="onSoundButton"/>
+                                <connections>
+                                    <action selector="actionOnOffSound:" destination="e3v-jO-mze" eventType="touchUpInside" id="vsO-W6-hoA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PRN-7d-VPg" userLabel="nextSong">
+                                <rect key="frame" x="550" y="66" width="30" height="30"/>
+                                <state key="normal" backgroundImage="nextSongButton"/>
+                                <connections>
+                                    <action selector="actionNextSong:" destination="e3v-jO-mze" eventType="touchUpInside" id="jFD-jA-okE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ndc-0P-ZIS" firstAttribute="centerX" secondItem="tKU-pe-Lzw" secondAttribute="centerX" id="2Tc-Dl-sq7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OdS-Gs-enD" secondAttribute="trailing" constant="-20" id="2qS-vS-5MZ"/>
+                            <constraint firstItem="OdS-Gs-enD" firstAttribute="top" secondItem="PRN-7d-VPg" secondAttribute="bottom" constant="4" id="34v-Gj-mQl"/>
                             <constraint firstItem="KK0-fi-0Jo" firstAttribute="top" secondItem="wq7-od-Hpu" secondAttribute="bottom" constant="12" id="3eY-XN-M4d"/>
                             <constraint firstItem="Rln-UB-BEH" firstAttribute="leading" secondItem="yUx-yg-Yfq" secondAttribute="trailing" constant="8" id="4Tm-vz-59P"/>
                             <constraint firstAttribute="trailingMargin" secondItem="wq7-od-Hpu" secondAttribute="trailing" constant="42" id="5zz-3s-dwM"/>
@@ -144,32 +169,44 @@
                             <constraint firstItem="Ndc-0P-ZIS" firstAttribute="top" secondItem="wq7-od-Hpu" secondAttribute="bottom" constant="11" id="B8l-mH-SBP"/>
                             <constraint firstItem="OdS-Gs-enD" firstAttribute="top" secondItem="Ndc-0P-ZIS" secondAttribute="bottom" constant="5" id="Dvg-YN-D02"/>
                             <constraint firstItem="OdS-Gs-enD" firstAttribute="top" secondItem="Rln-UB-BEH" secondAttribute="bottom" constant="7" id="HEg-n2-11F"/>
+                            <constraint firstItem="RGe-g9-7Ob" firstAttribute="leading" secondItem="M4y-EX-0BH" secondAttribute="trailing" constant="13" id="HvV-7W-aFW"/>
                             <constraint firstItem="yUx-yg-Yfq" firstAttribute="leading" secondItem="tKU-pe-Lzw" secondAttribute="leadingMargin" constant="-12" id="IBu-Ku-Tzi"/>
+                            <constraint firstItem="hd4-Qs-Pzh" firstAttribute="leading" secondItem="wq7-od-Hpu" secondAttribute="trailing" constant="12" id="Ifu-xO-4yN"/>
                             <constraint firstItem="wq7-od-Hpu" firstAttribute="width" secondItem="M4y-EX-0BH" secondAttribute="width" id="QM1-x0-jt7"/>
-                            <constraint firstItem="wq7-od-Hpu" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="16" id="RxR-My-O9x"/>
+                            <constraint firstItem="wq7-od-Hpu" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="36" id="RxR-My-O9x"/>
                             <constraint firstItem="M4y-EX-0BH" firstAttribute="leading" secondItem="yUx-yg-Yfq" secondAttribute="trailing" constant="8" id="Syb-1U-aEt"/>
+                            <constraint firstItem="PRN-7d-VPg" firstAttribute="trailing" secondItem="tKU-pe-Lzw" secondAttribute="trailingMargin" id="TxJ-Ja-wlD"/>
+                            <constraint firstItem="hd4-Qs-Pzh" firstAttribute="trailing" secondItem="tKU-pe-Lzw" secondAttribute="trailingMargin" id="U5x-zF-69q"/>
                             <constraint firstAttribute="trailingMargin" secondItem="KK0-fi-0Jo" secondAttribute="trailing" constant="43" id="UUW-nW-eEZ"/>
                             <constraint firstItem="Rln-UB-BEH" firstAttribute="width" secondItem="KK0-fi-0Jo" secondAttribute="width" id="VXS-XN-im8"/>
                             <constraint firstItem="Ndc-0P-ZIS" firstAttribute="top" secondItem="M4y-EX-0BH" secondAttribute="bottom" constant="24" id="Vcv-QZ-q4J"/>
+                            <constraint firstItem="PRN-7d-VPg" firstAttribute="leading" secondItem="KK0-fi-0Jo" secondAttribute="trailing" constant="13" id="W1Y-MH-Rpb"/>
+                            <constraint firstItem="PRN-7d-VPg" firstAttribute="top" secondItem="RGe-g9-7Ob" secondAttribute="bottom" constant="28" id="Xnt-mp-LWU"/>
                             <constraint firstItem="Rln-UB-BEH" firstAttribute="width" secondItem="KK0-fi-0Jo" secondAttribute="height" multiplier="14:9" id="ZMR-pR-VDV"/>
                             <constraint firstItem="OdS-Gs-enD" firstAttribute="leading" secondItem="tKU-pe-Lzw" secondAttribute="leadingMargin" constant="-20" id="aO6-C0-qxe"/>
-                            <constraint firstItem="OdS-Gs-enD" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="80" id="cxv-tW-s0O"/>
+                            <constraint firstItem="OdS-Gs-enD" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="100" id="cxv-tW-s0O"/>
                             <constraint firstItem="M4y-EX-0BH" firstAttribute="centerX" secondItem="tKU-pe-Lzw" secondAttribute="centerX" id="dBH-y0-r5R"/>
-                            <constraint firstItem="M4y-EX-0BH" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" id="h13-OL-rcd"/>
-                            <constraint firstItem="txL-z4-crJ" firstAttribute="top" secondItem="OdS-Gs-enD" secondAttribute="bottom" constant="3" id="jIN-D3-quh"/>
+                            <constraint firstItem="M4y-EX-0BH" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="20" id="h13-OL-rcd"/>
+                            <constraint firstItem="txL-z4-crJ" firstAttribute="top" secondItem="OdS-Gs-enD" secondAttribute="bottom" constant="-61" id="jIN-D3-quh"/>
+                            <constraint firstItem="RGe-g9-7Ob" firstAttribute="trailing" secondItem="tKU-pe-Lzw" secondAttribute="trailingMargin" id="ljh-NZ-h98"/>
                             <constraint firstItem="OdS-Gs-enD" firstAttribute="centerX" secondItem="tKU-pe-Lzw" secondAttribute="centerX" id="o6J-qE-GWY"/>
+                            <constraint firstItem="hd4-Qs-Pzh" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="36" id="pTi-bh-J4j"/>
                             <constraint firstItem="wq7-od-Hpu" firstAttribute="leading" secondItem="yUx-yg-Yfq" secondAttribute="trailing" constant="9" id="poy-JY-b0A"/>
+                            <constraint firstItem="PRN-7d-VPg" firstAttribute="top" secondItem="hd4-Qs-Pzh" secondAttribute="bottom" id="qXx-9S-2Zr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="M4y-EX-0BH" secondAttribute="trailing" constant="43" id="v3l-LL-FYn"/>
-                            <constraint firstItem="yUx-yg-Yfq" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="16" id="wOc-nn-2LN"/>
+                            <constraint firstItem="yUx-yg-Yfq" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="36" id="wOc-nn-2LN"/>
+                            <constraint firstItem="RGe-g9-7Ob" firstAttribute="top" secondItem="Use-V8-lgv" secondAttribute="bottom" constant="8" id="yat-7d-ScP"/>
                             <constraint firstItem="Ndc-0P-ZIS" firstAttribute="leading" secondItem="Rln-UB-BEH" secondAttribute="trailing" constant="8" id="zka-DS-AVI"/>
                             <constraint firstItem="OdS-Gs-enD" firstAttribute="top" secondItem="yUx-yg-Yfq" secondAttribute="bottom" constant="18" id="zlm-qk-GZX"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <outlet property="artistLable" destination="M4y-EX-0BH" id="Fuu-mg-cSw"/>
                         <outlet property="beginTimeLable" destination="Rln-UB-BEH" id="NFk-OW-o4h"/>
                         <outlet property="endTimeLable" destination="KK0-fi-0Jo" id="wec-6E-WaB"/>
                         <outlet property="musicSlider" destination="Ndc-0P-ZIS" id="6ye-hS-gM8"/>
+                        <outlet property="onOffVolume" destination="RGe-g9-7Ob" id="mO8-dA-WWE"/>
                         <outlet property="playStopButton" destination="yUx-yg-Yfq" id="mE7-ha-ZHa"/>
                         <outlet property="tableView" destination="OdS-Gs-enD" id="UaK-EC-cHi"/>
                         <outlet property="titleLable" destination="wq7-od-Hpu" id="IEB-7o-1YK"/>
@@ -177,10 +214,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u2o-cy-DHT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="112" y="1075"/>
+            <point key="canvasLocation" x="1780" y="360"/>
         </scene>
     </scenes>
     <resources>
+        <image name="nextSongButton" width="30" height="30"/>
+        <image name="onSoundButton" width="30" height="30"/>
         <image name="playButton.png" width="626" height="626"/>
+        <image name="previousSongButton" width="30" height="30"/>
     </resources>
 </document>

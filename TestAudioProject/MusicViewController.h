@@ -21,12 +21,20 @@
 @property (weak, nonatomic) IBOutlet UILabel *beginTimeLable;
 
 @property (weak, nonatomic) IBOutlet UIButton *playStopButton;
+@property (weak, nonatomic) IBOutlet UIButton *onOffVolume;
+
 @property (weak, nonatomic) IBOutlet UISlider *musicSlider;
+
+#pragma mark - Action
 
 - (IBAction)actionPlayStopMusic:(id)sender;
 - (IBAction)actionSlider:(id)sender;
 - (IBAction)actionBeginChangeValue:(id)sender;
 - (IBAction)actionEndChangeValue:(id)sender;
 - (IBAction)actionSliderEndValue:(id)sender;
-@end
 
+- (IBAction)actionNextSong:(id)sender;
+- (IBAction)actionPreviousSong:(id)sender;
+- (IBAction)actionOnOffSound:(id)sender;
+
+@end
