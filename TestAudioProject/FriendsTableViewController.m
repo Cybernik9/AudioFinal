@@ -39,7 +39,7 @@ static const NSInteger countUpdateFriends = 25;
     }
     else {
         [self getFriendsFromServer:0];
-    }
+    }//123123132
 }
 
 - (void)didReceiveMemoryWarning {
